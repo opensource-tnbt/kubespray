@@ -62,7 +62,7 @@ def get_var_as_bool(name, default):
 # Configurable as shell vars start
 
 
-CONFIG_FILE = os.environ.get("CONFIG_FILE", "./inventory/sample/hosts.yaml")
+CONFIG_FILE = os.environ.get("CONFIG_FILE", "./hosts.yaml")
 # Remove the reference of KUBE_MASTERS after some deprecation cycles.
 KUBE_CONTROL_HOSTS = int(os.environ.get("KUBE_CONTROL_HOSTS",
                          os.environ.get("KUBE_MASTERS", 2)))
@@ -207,6 +207,10 @@ class KubesprayInventory(object):
         next_host_id = highest_host_id + 1
         next_host = ""
 
+        username = os.environ.get("ANSIBLE_USER", 'sridhar')
+        password = os.environ.get("ANSIBLE_PASSWORD", 'sridhar123')
+        
+
         all_hosts = existing_hosts.copy()
         for host in changed_hosts:
             # Delete the host from config the hostname/IP has a "-" prefix
@@ -245,6 +249,8 @@ class KubesprayInventory(object):
                 # Uses automatically generated node name
                 # in case we dont provide it.
                 all_hosts[next_host] = {'ansible_host': access_ip,
+                                        'ansible_user': username,
+                                        'ansible_password': password,
                                         'ip': ip,
                                         'access_ip': access_ip}
             # Host/Argument starts with a letter, then we assume its a hostname
