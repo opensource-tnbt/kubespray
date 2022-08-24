@@ -35,3 +35,7 @@ RUN KUBE_VERSION=$(sed -n 's/^kube_version: //p' roles/kubespray-defaults/defaul
     && curl -LO https://storage.googleapis.com/kubernetes-release/release/$KUBE_VERSION/bin/linux/$ARCH/kubectl \
     && chmod a+x kubectl \
     && mv kubectl /usr/local/bin/kubectl
+
+RUN chmod a+x scripts/deploy.sh
+
+CMD scripts/deploy.sh
